@@ -1,0 +1,14 @@
+<section class="privacy-controls" aria-labelledby="analytics-choice">
+  <h2 id="analytics-choice">Your analytics choice</h2>
+  <label><input type="checkbox" data-analytics-optout /> Turn off analytics for this browser on this site</label>
+  <p data-analytics-status role="status">JavaScript is required to save this preference. Without JavaScript, no browser analytics is sent.</p>
+  <p>The setting uses only <code>berry.analytics.optout=true</code> in this site's local storage. It contains no identifier and stays until you uncheck it or clear site data. Set it separately on the personal website. Browser Do Not Track and Global Privacy Control signals also disable collection.</p>
+</section>
+<style>
+  .privacy-controls { border: 1px solid var(--border); padding: 1.4rem; margin-block: 2rem; max-width: 65rem; }
+  h2 { font-size: 1.4rem; margin-bottom: 1rem; }
+  label { display: flex; align-items: center; gap: .8rem; min-height: 44px; cursor: pointer; }
+  input { width: 1.3rem; height: 1.3rem; accent-color: var(--olive); flex-shrink: 0; }
+  p { color: var(--muted); font-size: .85rem; }
+  code { overflow-wrap: anywhere; }
+</style>

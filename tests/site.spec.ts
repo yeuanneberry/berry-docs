@@ -5,10 +5,11 @@ test('sharing metadata, local font and preview indexing are consistent', async (
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow');
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
   await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
-  await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute('content', 'Yeuanne Berry');
+  await expect(page).toHaveTitle('Linux presets, setup and recovery | Berry docs');
+  await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute('content', 'Linux presets, setup and recovery — Berry docs. 6 reviewed Berry guides for Linux application presets, customization, safe updates and recovery.');
   const imageURL = await page.locator('meta[property="og:image"]').getAttribute('content');
-  expect(new URL(imageURL!).pathname).toBe('/social-card.png');
-  const image = await request.get('/social-card.png');
+  expect(new URL(imageURL!).pathname).toMatch(/^\/og\/docs-index-[a-f0-9]{16}\.png$/);
+  const image = await request.get(new URL(imageURL!).pathname);
   expect(image.status()).toBe(200);
   const bytes = await image.body();
   expect(bytes.readUInt32BE(16)).toBe(1200);
@@ -26,5 +27,5 @@ test('unknown addresses return a usable 404 page', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Page not found');
   await page.locator('main').getByRole('link', { name: 'Home', exact: false }).click();
   await expect(page).toHaveURL(/\/$/);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Yeuanne Berry/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Documentation');
 });

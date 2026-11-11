@@ -2,26 +2,58 @@
 import Layout from "../layouts/Layout.astro";
 import { analyticsEnabled } from "../../site.config.mjs";
 import Icon from "../components/Icon.astro";
+import PrivacyControls from "../components/PrivacyControls.astro";
 ---
 
-<Layout>
+<Layout pageId="privacy">
   <main id="main-content" class="shell privacy-page" tabindex="-1">
     <h1>Privacy</h1>
-    {analyticsEnabled ? <>
-      <p>This site uses Cloudflare Web Analytics to understand page visits and loading performance.</p>
-      <p>The analytics beacon does not use cookies or local storage. It reports information such as the page visited, referring site, browser, device, country and loading measurements. It is configured to run only on this site's production address.</p>
-      <p>There are no advertising trackers or contact forms. Hosting providers may process request information when delivering pages.</p>
-      <a href="https://developers.cloudflare.com/speed/observatory/rum-beacon/" target="_blank" rel="noopener noreferrer">Cloudflare's data collection details <Icon name="external" /><span class="sr-only"> (opens in a new tab)</span></a>
-    </> : <>
-      <p>This site currently uses no visitor analytics or advertising trackers.</p>
-      <p>There are no contact forms. Hosting providers may process request information when delivering pages.</p>
-    </>}
-    <p>External links open other websites, which have their own privacy practices.</p>
+    <p class="privacy-date">Updated 11 November 2026</p>
+    <p class="statistics-status">{analyticsEnabled ? "First-party statistics are enabled in this build and run only on its configured production origin." : "First-party statistics are disabled in this build. No visitor statistics are collected by this site."}</p>
+    <p>Berry docs is maintained by Yeuanne Berry. It has no advertising trackers, advertising cookies, contact forms or visitor accounts. The documentation and the personal website are separate sites.</p>
+
+    <section aria-labelledby="statistics-purpose">
+      <h2 id="statistics-purpose">What the statistics are for</h2>
+      <p>When enabled, first-party aggregate counts help identify useful chapters, navigation paths, source links and links to the personal website. They count page loads and selected outbound clicks, rather than unique people or sessions.</p>
+      <p>A chapter engagement count is a reading proxy: a visible chapter has been open for at least 30 seconds and reached at least 50% reading depth. It does not prove that someone read, understood or applied a guide.</p>
+      <p>Page loads use fixed chapter/page identifiers, a coarse referrer category (search, social, internal, direct or unknown, other), viewport class (mobile, tablet, desktop) and browser family (Chrome, Edge, Firefox, Safari, other). These dimensions are counted independently rather than combined into a visitor profile. Selected outbound clicks use an approved destination label, such as desktop source or personal website, rather than a URL. Unknown addresses use one generic not-found label.</p>
+      <p>A random 10% sample of eligible page loads may report loading, interaction or visual-stability ratings for LCP, INP and CLS. Only the metric name and good, needs-improvement or poor rating are counted; no exact timing, element text or interaction target is stored. Sampling is per page load and uses no persistent identity. The server assigns UTC dates to the aggregate counters.</p>
+      <p>Statistics do not store raw event records, full page addresses, query strings, fragments, referrer addresses, click destinations, free text, IP addresses, IP hashes, fingerprints, advertising IDs or persistent visitor/session identifiers. The collection endpoint receives network request information to deliver the request; the application does not store those headers or log event payloads.</p>
+    </section>
+
+    <section aria-labelledby="statistics-retention">
+      <h2 id="statistics-retention">Retention and access</h2>
+      <p>Daily aggregate buckets are retained for 90 days. Monthly aggregate buckets are retained for 13 months and then deleted. There are no raw event rows to retain. An owner-only dashboard displays aggregates; there is no public statistics feed.</p>
+      <p>Aggregate deletion from the active database does not promise immediate deletion from provider backups. Depending on the eventual hosting plan, backups may retain deleted data for a further 7 or 30 days. The hosting plan and its actual backup policy must be verified before collection is enabled.</p>
+    </section>
+
+    <section aria-labelledby="privacy-choices">
+      <h2 id="privacy-choices">Your choices</h2>
+      <p>Statistics respect Global Privacy Control and Do Not Track. You can also save a local opt-out on this site. The only preference stored by the statistics feature is <code>berry.analytics.optout=true</code> in local storage; it is not an identifier and remains until you remove it. If storage is unavailable, collection stays off.</p>
+      <p>This preference applies to this origin only. Set it separately on the personal website if you use both; no preference or visitor identifier is synchronized between sites. Removing a saved opt-out does not override Global Privacy Control, Do Not Track or a disabled build.</p>
+      <noscript><p>JavaScript is disabled, so no statistics are sent. Preference controls require JavaScript; you can also use your browser's privacy settings.</p></noscript>
+      <PrivacyControls />
+    </section>
+
+    <section aria-labelledby="hosting-information">
+      <h2 id="hosting-information">Hosting and other websites</h2>
+      <p>A hosting provider may process request information, including IP addresses and operational/security logs, when delivering pages and protecting the service. That processing is separate from these application statistics. No production hosting processor, log-retention policy or backup policy has been verified by this local preparation; those details must be confirmed and this notice reviewed before launch.</p>
+      <p>External links open other websites with their own privacy practices. No third-party analytics beacon is loaded by this implementation.</p>
+    </section>
+
+    <section aria-labelledby="privacy-contact">
+      <h2 id="privacy-contact">Contact</h2>
+      <p>For a privacy question, use the contact options on <a href="https://github.com/yeuanneberry" target="_blank" rel="noopener noreferrer">Yeuanne Berry's GitHub profile <Icon name="external" /><span class="sr-only"> (opens in a new tab)</span></a>.</p>
+    </section>
   </main>
 </Layout>
 
 <style>
   .privacy-page { padding-block: 4rem 5rem; min-height: 65vh; }
+  section { margin-top: 2.5rem; }
+  h2 { margin-bottom: 1rem; }
+  .privacy-date { font-size: .8rem; }
+  code { overflow-wrap: anywhere; }
   p { max-width: 55rem; color: var(--muted); line-height: 1.9; margin-bottom: 1.5rem; }
   a { color: var(--ochre); }
 </style>

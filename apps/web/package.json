@@ -19,7 +19,8 @@
     "motion": "14.6.0",
     "oxc-transform-react": "0.145.0",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "web-vitals": "6.2.3"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",

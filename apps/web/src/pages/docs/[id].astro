@@ -17,7 +17,7 @@ const { Content, headings } = await render(entry);
 const toc = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
 ---
 
-<ManualLayout title={entry.data.title} description={entry.data.description} current={entry.id} headings={headings}>
+<ManualLayout current={entry.id} headings={headings}>
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <a href="/docs/">Documentation</a><span aria-hidden="true">/</span><span>{entry.data.group}</span>
   </nav>
@@ -28,7 +28,7 @@ const toc = headings.filter((heading) => heading.depth === 2 || heading.depth ==
   </details>}
   <article class="prose" aria-label={entry.data.title}><Content /></article>
   <div class="source-note">
-    <p>From {entry.data.sourcePublished ? <a href={entry.data.sourceUrl} target="_blank" rel="noopener noreferrer">{entry.data.repository} <Icon name="external" /><span class="sr-only"> (opens in a new tab)</span></a> : <span>{entry.data.repository}</span>} · reviewed {entry.data.reviewed}</p>
+    <p>From {entry.data.sourcePublished ? <a href={entry.data.sourceUrl} data-stats-target="desktop-source" target="_blank" rel="noopener noreferrer">{entry.data.repository} <Icon name="external" /><span class="sr-only"> (opens in a new tab)</span></a> : <span>{entry.data.repository}</span>} · reviewed {entry.data.reviewed}</p>
     <details class="berry-disclosure source-disclosure">
       <summary><span>Source details</span><Icon name="chevron-down" class="disclosure-chevron" /></summary>
       <div class="disclosure-panel" role="region" aria-label="Source revision details" tabindex="0">

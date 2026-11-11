@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { analyticsBootstrap, analyticsEnabled } from "./site.config.mjs";
+import { websiteStructuredData } from "./site.config.mjs";
 
 /** @param {string} text @returns {`sha256-${string}`} */
 export const cspHash = text => `sha256-${createHash("sha256").update(text, "utf8").digest("base64")}`;
@@ -17,14 +17,13 @@ export const csp = {
   directives: [
     "default-src 'self'", "base-uri 'self'", "object-src 'none'",
     "frame-src 'none'", "form-action 'none'",
-    `connect-src 'self'${analyticsEnabled ? " https://cloudflareinsights.com/cdn-cgi/rum" : ""}`,
+    "connect-src 'self'",
   ],
   scriptDirective: {
     resources: [
       { resource: "'self'", kind: "element" }, { resource: "'none'", kind: "attribute" },
-      ...(analyticsEnabled ? [{ resource: "https://static.cloudflareinsights.com/beacon.min.js", kind: "element" }] : []),
     ],
-    hashes: [cspHash(navigation), ...(analyticsBootstrap ? [cspHash(analyticsBootstrap)] : [])].map(hash => ({ hash, kind: "element" })),
+    hashes: [cspHash(navigation), ...(websiteStructuredData ? [cspHash(websiteStructuredData)] : [])].map(hash => ({ hash, kind: "element" })),
   },
   styleDirective: {
     resources: [{ resource: "'self'", kind: "element" }, { resource: "'unsafe-hashes'", kind: "attribute" }],

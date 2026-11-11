@@ -71,49 +71,19 @@ img { display: block; max-width: 100%; height: auto; }
 .mobile-menu-close { display: inline-flex; }
 .mobile-nav { display: flex; flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; flex-direction: column; padding-block: 1.5rem; }
 .mobile-nav a { padding: .8rem 0; min-height: 60px; text-decoration: none; font-size: clamp(1.7rem, 6vw, 2.6rem); border-bottom: 1px solid var(--border); }
-.home { padding-top: 4.5rem; padding-bottom: 4rem; }
-.hero { max-width: 62rem; }
-.hero h1 { font-size: clamp(2.8rem, 4.5vw, 4.7rem); letter-spacing: -.07em; line-height: 1.13; margin-bottom: 1.75rem; }
-.hero-description { color: var(--muted); max-width: 43rem; margin-bottom: 2rem; font-size: .98rem; line-height: 1.9; }
-.button { display: inline-flex; align-items: center; justify-content: space-between; gap: 2.75rem; min-height: 3.25rem; padding: .65rem 1.1rem; border: 1px solid var(--olive); border-radius: 3px; background: var(--olive); color: var(--background); text-decoration: none; }
-.button:hover { background: var(--paper); border-color: var(--paper); color: var(--background); }
 .subtle-link { color: var(--paper); font-size: .84rem; text-decoration-color: var(--olive); }
-.hero-copy > .subtle-link { display: block; width: fit-content; margin-top: 1.15rem; padding-block: .25rem; }
-.environment-label { color: var(--muted); font-size: .68rem; letter-spacing: .12em; margin: 2.7rem 0 0; }
-.environment-label span { color: var(--olive); margin-inline: .6rem; }
-.manual-overview { margin-top: 5rem; padding-top: 2.5rem; border-top: 1px solid var(--border); }
-.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 1.5rem; margin-bottom: 2rem; }
-.section-heading .eyebrow { margin-bottom: .7rem; }
-.topic-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--border); }
-.topic { padding: 1.7rem 1.6rem; min-width: 0; }
-.topic + .topic { border-left: 1px solid var(--border); }
-.topic-number { font-size: .72rem; color: var(--ochre); margin: 0 0 1.1rem; }
-.topic h3 { margin: 0 0 1.5rem; }
-.topic ul { list-style: none; margin: 0; padding: 0; }
-.topic li + li { border-top: 1px solid var(--border); }
-.topic a { display: flex; gap: .75rem; justify-content: space-between; align-items: center; padding: .7rem 0; font-size: .86rem; text-decoration: none; }
-.topic a span { color: var(--olive); }
-.topic a:hover { color: var(--ochre); }
-.edition-note { display: flex; align-items: center; gap: 1.25rem; margin-top: 2rem; padding: 1.5rem 0; font-size: .8rem; color: var(--muted); }
-.edition-note p { max-width: 44rem; margin: 0; }
-.edition-note a { margin-left: auto; flex-shrink: 0; color: var(--paper); }
-.edition-mark { font-size: 2.2rem; line-height: 1; color: var(--olive); }
 .site-footer { border-top: 1px solid var(--border); padding-block: 1.8rem 2.5rem; display: flex; justify-content: space-between; gap: 1.5rem; font-size: .7rem; color: var(--muted); }
 .site-footer p { margin: 0; }
 .site-footer p span { color: var(--olive); margin-inline: .5rem; }
 .site-footer nav { display: flex; flex-wrap: wrap; gap: 1.5rem; }
 .site-footer a { text-decoration: none; }
 
-:is(a, button, .work-preview-link, .repository-card, .chapter-result) { transition: color var(--motion-fast) var(--ease-interact), background-color var(--motion-fast) var(--ease-interact), border-color var(--motion-fast) var(--ease-interact); }
-.path-links > a, .repository-card, .work-preview-link { transition: transform var(--motion-fast) var(--ease-interact), border-color var(--motion-fast) var(--ease-interact); }
-@media (hover: hover) {
-  .path-links > a:hover, .repository-card:hover, .work-preview-link:hover { transform: translateY(-2px); }
-}
+:is(a, button, .chapter-result) { transition: color var(--motion-fast) var(--ease-interact), background-color var(--motion-fast) var(--ease-interact), border-color var(--motion-fast) var(--ease-interact); }
 @keyframes introduction {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.portfolio-hero, .about-intro, .work-intro, .code-intro, .case-header, .index-intro { animation: introduction var(--motion-enter) var(--ease-enter) both; }
+.index-intro { animation: introduction var(--motion-enter) var(--ease-enter) both; }
 
 .manual-layout { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 3.5rem; padding-block: 3rem 5rem; min-height: 75vh; }
 .manual-layout.with-toc { grid-template-columns: 14rem minmax(0, 1fr) 13rem; gap: 2.75rem; }
@@ -182,23 +152,11 @@ img { display: block; max-width: 100%; height: auto; }
   .manual-layout.with-toc { grid-template-columns: 14rem minmax(0, 1fr); gap: 3rem; }
   .on-this-page { display: none; }
   .mobile-toc { display: block; margin-bottom: 1.75rem; }
-  .topic { padding: 1.4rem 1.2rem; }
 }
 @media (max-width: 850px) {
   .shell { width: min(100% - 2.5rem, 58rem); }
   .desktop-nav { display: none; }
   .mobile-menu-toggle { display: inline-flex; }
-  .home { padding-top: 2.75rem; }
-  .hero h1 { font-size: clamp(2.8rem, 9vw, 4.5rem); }
-  .hero-description { max-width: 42rem; }
-  .environment-label { margin-top: 2rem; }
-  .manual-overview { margin-top: 3.5rem; }
-  .topic-grid { grid-template-columns: minmax(0, 1fr); }
-  .topic { padding: 1.6rem; }
-  .topic + .topic { border-left: 0; border-top: 1px solid var(--border); }
-  .topic h3 { margin-bottom: 1rem; }
-  .edition-note { display: grid; grid-template-columns: 2rem minmax(0, 1fr); align-items: start; }
-  .edition-note a { grid-column: 2; margin-left: 0; justify-self: start; }
   .manual-layout, .manual-layout.with-toc { display: block; padding-block: 1.5rem 3rem; }
   .desktop-chapters { display: none; }
   .mobile-chapters { display: block; margin-bottom: 2.25rem; }
@@ -210,8 +168,6 @@ img { display: block; max-width: 100%; height: auto; }
   .header-inner, .mobile-menu-top { gap: .6rem; }
   .desktop-nav a { font-size: .75rem; }
   .wordmark-detail { display: none; }
-  .section-heading { align-items: start; flex-direction: column; }
-  .section-heading h2 { font-size: 1.55rem; }
   .eyebrow { font-size: .65rem; }
   .chapter-pagination { grid-template-columns: minmax(0, 1fr); }
 }

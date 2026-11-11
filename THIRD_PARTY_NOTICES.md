@@ -3,6 +3,12 @@
 Upstream notices for the selected SVG icons and optional animation runtime.
 Other dependencies and bundled fonts retain their own license files.
 
+## web-vitals 6.2.3
+
+Copyright 2020 Google LLC. Licensed under Apache License 2.0, retained in
+[`licenses/web-vitals-LICENSE.txt`](licenses/web-vitals-LICENSE.txt).
+The unmodified metric library is loaded only for sampled eligible page loads.
+
 ## Lucide Astro 1.61.0
 
 https://github.com/lucide-icons/lucide

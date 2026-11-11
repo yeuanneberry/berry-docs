@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test('every main page introduction shares the entrance and honors reduced motion', async ({ page }) => {
-  const introductions = [['/', '.portfolio-hero'], ['/work/', '.work-intro'], ['/about/', '.about-intro'], ['/code/', '.code-intro'], ['/docs/', '.index-intro']];
+  const introductions = [['/', '.index-intro'], ['/docs/', '.index-intro']];
   for (const [path, selector] of introductions) {
     await page.goto(path!);
     const intro = page.locator(selector!);
@@ -12,9 +12,9 @@ test('every main page introduction shares the entrance and honors reduced motion
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.reload();
   await expect(page.locator('.index-intro')).toHaveCSS('animation-name', 'none');
-  await page.goto('/work/');
-  await expect(page.locator('.work-intro')).toHaveCSS('animation-name', 'none');
-  await expect(page.locator('.work-intro')).toHaveCSS('opacity', '1');
+  await page.goto('/');
+  await expect(page.locator('.index-intro')).toHaveCSS('animation-name', 'none');
+  await expect(page.locator('.index-intro')).toHaveCSS('opacity', '1');
 });
 
 test('mobile controls work before any animation module downloads', async ({ page }, info) => {
@@ -83,9 +83,9 @@ test('menu transitions survive interruption, repeated close and desktop resize',
 
 test('reduced motion keeps content visible and menu animation disabled', async ({ page }, info) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/about/');
-  await expect(page.locator('.about-intro')).toHaveCSS('opacity', '1');
-  expect(await page.locator('.about-intro').evaluate(element => element.getAnimations().length)).toBe(0);
+  await page.goto('/');
+  await expect(page.locator('.index-intro')).toHaveCSS('opacity', '1');
+  expect(await page.locator('.index-intro').evaluate(element => element.getAnimations().length)).toBe(0);
   if (info.project.name === 'phone') {
     await page.getByRole('button', { name: 'Open menu' }).click();
     const panel = page.locator('#mobile-navigation');

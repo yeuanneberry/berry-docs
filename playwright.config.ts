@@ -8,7 +8,7 @@ export default defineConfig({
   workers: 2,
   reporter: 'list',
   use: {
-    baseURL: 'http://127.0.0.1:4322',
+    baseURL: 'http://127.0.0.1:4332',
     trace: 'retain-on-failure',
     launchOptions: {
       executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
@@ -21,8 +21,8 @@ export default defineConfig({
   webServer: {
     // Astro auto-backgrounds under agent environments; this documented one-off
     // foreground mode lets Playwright own and terminate the preview process.
-    command: 'pnpm --filter web preview --ignore-lock --host 127.0.0.1 --port 4322',
-    url: 'http://127.0.0.1:4322',
+    command: 'pnpm --filter web preview --ignore-lock --host 127.0.0.1 --port 4332',
+    url: 'http://127.0.0.1:4332',
     reuseExistingServer: false,
     timeout: 30_000,
   },

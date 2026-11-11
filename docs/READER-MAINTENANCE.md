@@ -6,6 +6,14 @@ guides from Berry desktop at a committed revision. Generated files under
 location. Edit and review the owning guide first, commit it, then update the
 manifest's revision and refresh. Review the full diff before changing its date.
 
+Reader search and sharing titles live in `apps/web/page-metadata.mjs`, separately
+from the canonical guide headings and descriptions. The index count follows the
+source manifest. `ManualLayout.astro` passes only the page identity to the shared
+layout so HTML, Open Graph and Twitter use the same metadata. After changing
+card layout, artwork or fonts, bump its visual version and inspect the generated
+cards at 1200×630 and embed size. `pnpm check-site-builds` checks the root alias,
+index and every chapter across the local, preview, production and analytics fixtures.
+
 ```sh
 python3 -B scripts/sync-reader.py --write --berry-desktop ../berry-desktop
 ```
@@ -24,10 +32,11 @@ objects. `pnpm check-reader` verifies local files against the lock without needi
 the source checkout. This catches accidental drift; it does not authenticate a
 deliberately rewritten lock or prove that an upstream review happened.
 
-The repository's `published` flag is false for an unpublished local candidate.
-It suppresses source hyperlinks while retaining revision/path information.
-Set it true only after verifying anonymous access to the exact remote commit and
-linked files, then regenerate. Website deployment must not precede that check.
+The manifest's `published` flag records source publication; extraction retains
+the existing published source selection. A false flag suppresses source links
+while retaining revision/path information. Set it true only after verifying
+anonymous access to the exact remote commit and linked files, then regenerate.
+Documentation deployment must not precede that check.
 
 ```sh
 python3 -B scripts/sync-reader.py --verify-public

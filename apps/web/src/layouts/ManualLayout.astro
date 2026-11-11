@@ -5,16 +5,15 @@ import Icon from "../components/Icon.astro";
 import "../styles/manual-navigation.css";
 
 interface Props {
-  title: string;
-  description: string;
   current: string;
   headings?: { depth: number; slug: string; text: string }[];
 }
 const { current, headings = [] } = Astro.props;
+const pageId = current === "index" ? "docs-index" : `chapter-${current}`;
 const toc = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
 ---
 
-<Layout>
+<Layout pageId={pageId}>
   <div class:list={["manual-layout", "shell", { "with-toc": toc.length > 0 }]}>
     <aside class="desktop-chapters"><ChapterNav current={current} /></aside>
     <main id="main-content" tabindex="-1" class="manual-main">

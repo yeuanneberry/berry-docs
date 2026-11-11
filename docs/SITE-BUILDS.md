@@ -1,40 +1,42 @@
 # Site build settings
 
-Local and preview builds are unindexed by default. No domain, DNS record or
-hosting project is created by a build. The intended domain is still deferred.
-
-`apps/web/site.config.mjs` reads these explicit build environment variables:
+The reader builds independently. No domain, DNS record, hosting project or
+deployment is created by a build. Local/preview builds remain unindexed.
 
 | Variable | Default | Meaning |
 | --- | --- | --- |
-| `SITE_URL` | unset | Final HTTPS origin, without a path, query or credentials |
-| `SITE_INDEXABLE` | `false` | Emit indexable metadata and a sitemap only when `true` |
+| `SITE_URL` | unset | Documentation HTTPS origin without credentials/path/query/fragment |
+| `SITE_INDEXABLE` | `false` | Emit indexable metadata and sitemap only when `true` |
+| `WEBSITE_URL` | `http://127.0.0.1:4321` | Independent portfolio origin for crosslinks |
+| `ANALYTICS_ENABLED` | `false` | Include eligible first-party collection; requires an indexable HTTPS build |
 
-Preview builds may supply the intended production origin for canonical links and
-social cards while keeping `SITE_INDEXABLE=false`. Local builds without an origin
-omit canonicals and use localhost social URLs; these are for local review.
-Production sharing requires the confirmed origin. Build settings are explicit
-process environment values, not automatically loaded from a root `.env` file.
-
-After the launch origin is confirmed, the source-only production build command is:
+WEBSITE_URL accepts HTTPS origins or HTTP loopback origins (`localhost`,
+`127.0.0.1`, `[::1]`) without credentials/path/query/fragment. Indexable builds
+require explicit non-loopback WEBSITE_URL and explicit SITE_URL. No production
+domain is assumed. For a synthetic source-only production build:
 
 ```sh
-SITE_URL=https://yeuanneberry.moe SITE_INDEXABLE=true pnpm build
+SITE_URL=https://docs.example.test WEBSITE_URL=https://website.example.test SITE_INDEXABLE=true pnpm build
 ```
 
-This command builds files only. Domain purchase, hosting and DNS are separate.
-Previews need their own build with indexing disabled; a production artifact keeps
-its production metadata wherever it is served. The 404 page always stays
-unindexed and is excluded from the sitemap.
+Preview builds may supply final origins with SITE_INDEXABLE=false. Without
+SITE_URL, local builds omit canonicals and use localhost social URLs. Settings
+are process environment values, not automatic root `.env` imports. Production
+metadata stays in its artifact wherever served; previews need an unindexed build.
+The 404 stays unindexed and outside the sitemap. Both index routes canonical to
+`/docs/`; the `/` alias is excluded from the sitemap. Each real page has its own
+title, description and social metadata. Factual WebSite JSON-LD is emitted only
+with a configured origin and is permitted by an exact CSP hash.
 
-`scripts/generate-social-card.mjs` generates the 1200x630 PNG before root build/dev
-commands. It composes the approved original portrait and local font; the generated
-public file is ignored. Preserve its artwork and font notices. The original
-profile image and all metadata titles/descriptions retain the owner's choices.
-
-`pnpm check-site-builds` builds isolated local, preview and synthetic production
-fixtures under ignored `.cache/site-builds`. It checks canonicals, social
-URLs, robots rules, sitemap contents, 404 indexing and invalid settings without
-connecting to the example origin. A fourth synthetic analytics-enabled fixture
-supports the local Cloudflare check. These fixtures never deploy. See
-[launch preparation](LAUNCH.md) for security and optional analytics maintenance.
+Dev/preview use strict port 4322, browser checks 4332 and Wrangler 4333. Website
+links are ordinary external navigation, never imports or runtime data requests.
+Root build/dev generates nine page-specific 1200x630 social PNGs from trusted
+reviewed metadata, approved artwork and the local font. Their names include a
+metadata/template version; bump `visualVersion` in page-metadata.mjs after
+template, font or artwork changes. Generated `public/og` is ignored. Preserve
+asset notices. `pnpm check-site-builds` creates local, preview, synthetic
+production and analytics fixtures in ignored `.cache/site-builds`. It checks
+metadata, canonicals, robots, sitemap, invalid origins and portfolio separation.
+Fixtures never deploy. Retired CF_WEB_ANALYTICS settings fail rather than loading
+a third-party beacon. See [launch preparation](LAUNCH.md) and
+[analytics operations](ANALYTICS.md) for separate build/runtime enablement.

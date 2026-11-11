@@ -16,6 +16,8 @@ local.db-*
 # Environment variables
 .env
 .env*.local
+.dev.vars
+.dev.vars.*
 
 # IDEs and editors
 .vscode/*
@@ -54,6 +56,7 @@ coverage
 test-results/
 playwright-report/
 apps/web/public/social-card.png
+apps/web/public/og/
 
 # Misc
 *.tgz

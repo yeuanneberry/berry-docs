@@ -3,7 +3,7 @@ import { writeFile } from 'node:fs/promises';
 
 test('initial pages stay within asset budgets and record local loading metrics', async ({ browser, baseURL }, info) => {
   const report = [];
-  for (const path of ['/', '/about/', '/work/', '/docs/customize/']) {
+  for (const path of ['/', '/docs/', '/docs/customize/']) {
     const context = await browser.newContext({ baseURL, viewport: info.project.use.viewport });
     const page = await context.newPage();
     const external: string[] = [];
@@ -23,7 +23,7 @@ test('initial pages stay within asset budgets and record local loading metrics',
         await document.fonts.ready;
         // Closed native details can retain pending, non-visible transitions.
         // Observe the page introduction rather than waiting on hidden controls.
-        const intro = document.querySelector('.portfolio-hero, .about-intro, .work-intro, .index-intro');
+        const intro = document.querySelector('.index-intro');
         await Promise.all((intro?.getAnimations() ?? []).map(animation => animation.finished.catch(() => {})));
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
       });

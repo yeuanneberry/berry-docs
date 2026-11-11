@@ -4,14 +4,16 @@ import Header from "../components/Header.astro";
 import Icon from "../components/Icon.astro";
 import { getImage } from "astro:assets";
 import portrait from "../assets/profile.png";
-import { profile } from "../data/profile";
-import { site, analyticsBootstrap } from "../../site.config.mjs";
+import { site, analyticsEnabled, websiteURL, websiteStructuredData } from "../../site.config.mjs";
+import { metadataFor } from "../../page-metadata.mjs";
 
-interface Props { noindex?: boolean; }
-const { noindex = false } = Astro.props;
-const title = profile.name;
-const canonical = site.url && !noindex ? new URL(Astro.url.pathname, site.url).href : undefined;
-const socialImage = new URL("/social-card.png", site.url ?? Astro.url.origin).href;
+interface Props { noindex?: boolean; pageId?: string; title?: string; description?: string; }
+const { noindex = false, pageId = "docs-index" } = Astro.props;
+const metadata = metadataFor(pageId);
+const title = Astro.props.title ?? metadata.title;
+const description = Astro.props.description ?? metadata.description;
+const canonical = site.url && !noindex ? new URL(metadata.path, site.url).href : undefined;
+const socialImage = new URL(metadata.image, site.url ?? Astro.url.origin).href;
 const favicon = await getImage({ src: portrait, width: 32, height: 32, format: "png" });
 const touchIcon = await getImage({ src: portrait, width: 180, height: 180, format: "png" });
 ---
@@ -22,43 +24,45 @@ const touchIcon = await getImage({ src: portrait, width: 180, height: 180, forma
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <meta name="description" content={profile.name} />
+    <meta name="description" content={description} />
     <meta name="robots" content={site.indexable && !noindex ? "index, follow" : "noindex, nofollow"} />
     {canonical && <link rel="canonical" href={canonical} />}
     <link rel="icon" type="image/png" sizes="32x32" href={favicon.src} />
     <link rel="apple-touch-icon" sizes="180x180" href={touchIcon.src} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={profile.name} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Berry docs" />
     {canonical && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={socialImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={profile.name} />
+    <meta property="og:image:alt" content={metadata.imageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={profile.name} />
-    <meta name="twitter:description" content={profile.name} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={metadata.imageAlt} />
+    {websiteStructuredData && <script is:inline type="application/ld+json" set:html={websiteStructuredData} />}
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body>
+  <body data-analytics-enabled={String(analyticsEnabled)} data-analytics-origin={site.url ?? ""} data-analytics-page={pageId} data-analytics-related-origin={websiteURL}>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <Header />
     <slot />
     <footer class="site-footer shell">
-      <p>Yeuanne Berry</p>
+      <p>Berry docs</p>
       <nav aria-label="Elsewhere">
         <a href="/privacy/">Privacy</a>
-        <a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub <Icon name="external" size={14} /><span class="sr-only"> (opens in a new tab)</span></a>
-        <a href={profile.studio} target="_blank" rel="noopener noreferrer">Yappers <Icon name="external" size={14} /><span class="sr-only"> (opens in a new tab)</span></a>
-        <a href="/docs/">Berry docs <Icon name="arrow-right" size={14} /></a>
+        <a href={websiteURL} data-stats-target="website" target="_blank" rel="noopener noreferrer">Website <Icon name="external" size={14} /><span class="sr-only"> (opens in a new tab)</span></a>
+        <a href="/docs/">Chapters <Icon name="arrow-right" size={14} /></a>
       </nav>
     </footer>
-    {analyticsBootstrap && <script is:inline set:html={analyticsBootstrap} />}
   </body>
 </html>
 
 <script>
   import "../scripts/menu-motion";
+  import "../scripts/analytics";
 </script>

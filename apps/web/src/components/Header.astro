@@ -4,22 +4,23 @@ import portrait from "../assets/profile.png";
 import Icon from "./Icon.astro";
 import navigationScript from "../scripts/navigation.js?raw";
 import noScriptStyles from "../styles/no-script-navigation.css?url";
+import { websiteURL } from "../../site.config.mjs";
 const path = Astro.url.pathname;
 const links = [
-  ["Home", "/"], ["Work", "/work/"], ["Code", "/code/"],
-  ["Berry docs", "/docs/"], ["About", "/about/"],
+  ["Home", "/"], ["Chapters", "/docs/"], ["Privacy", "/privacy/"],
 ];
 const current = (href: string) => path === href ? "page" : href !== "/" && path.startsWith(href) ? "true" : undefined;
 ---
 
 <header class="site-header" data-site-navigation>
   <div class="header-inner shell">
-    <a class="wordmark" href="/" aria-label="Yeuanne Berry home">
+    <a class="wordmark" href="/" aria-label="Berry docs home">
       <Image src={portrait} width={32} height={32} widths={[32, 64, 96]} sizes="32px" format="webp" quality={90} alt="" class="header-avatar" />
-      <span>yeuanne<span class="olive">berry</span></span>
+      <span><span class="olive">berry</span> docs</span>
     </a>
     <nav class="desktop-nav" aria-label="Primary">
       {links.map(([label, href]) => <a href={href} aria-current={current(href!)}>{label}</a>)}
+      <a href={websiteURL} data-stats-target="website" target="_blank" rel="noopener noreferrer">Website <Icon name="external" size={14} /><span class="sr-only"> (opens in a new tab)</span></a>
     </nav>
     <button class="mobile-menu-toggle menu-control" id="open-navigation" type="button" aria-label="Open menu" aria-controls="mobile-navigation" aria-expanded="false" aria-haspopup="dialog">
       <Icon name="menu" size={20} />
@@ -31,7 +32,7 @@ const current = (href: string) => path === href ? "page" : href !== "/" && path.
         <div class="mobile-menu-top shell">
           <div class="wordmark" aria-hidden="true">
             <Image src={portrait} width={32} height={32} widths={[32, 64, 96]} sizes="32px" format="webp" quality={90} alt="" class="menu-avatar" />
-            <span>yeuanne<span class="olive">berry</span></span>
+            <span><span class="olive">berry</span> docs</span>
           </div>
           <button id="close-navigation" class="mobile-menu-close menu-control" type="button" aria-label="Close menu" autofocus>
             <Icon name="close" size={20} />
@@ -40,6 +41,7 @@ const current = (href: string) => path === href ? "page" : href !== "/" && path.
       </div>
       <nav class="mobile-nav shell" aria-label="Primary">
         {links.map(([label, href]) => <a href={href} aria-current={current(href!)}>{label}</a>)}
+        <a href={websiteURL} data-stats-target="website" target="_blank" rel="noopener noreferrer">Website <Icon name="external" size={20} /><span class="sr-only"> (opens in a new tab)</span></a>
       </nav>
     </div>
   </dialog>

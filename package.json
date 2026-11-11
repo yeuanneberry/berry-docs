@@ -1,5 +1,5 @@
 {
-  "name": "yeuanneberry-portfolio",
+  "name": "berry-docs",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -14,11 +14,12 @@
     "preview": "pnpm --filter web preview --host 127.0.0.1",
     "test": "playwright test",
     "check-reader": "python3 -B scripts/sync-reader.py --verify",
-    "check-ascii": "node scripts/generate-ascii-portrait.mjs --check",
-    "check-site-builds": "node scripts/check-site-builds.mjs",
+    "check-analytics": "node --test analytics/worker.test.mjs",
+    "stats:init:local": "WRANGLER_SEND_METRICS=false wrangler d1 execute STATS_DB --local --file analytics/schema.sql",
+    "check-site-builds": "node scripts/generate-social-card.mjs && node scripts/check-site-builds.mjs",
     "check-cloudflare": "node scripts/check-cloudflare-preview.mjs",
-    "preview:cloudflare": "WRANGLER_SEND_METRICS=false wrangler dev --local --ip 127.0.0.1 --port 4323",
-    "check": "pnpm check-reader && pnpm check-ascii && pnpm check-types && pnpm build && pnpm check-site-builds && pnpm test && pnpm check-cloudflare"
+    "preview:cloudflare": "WRANGLER_SEND_METRICS=false wrangler dev --local --ip 127.0.0.1 --port 4333",
+    "check": "pnpm check-reader && pnpm check-analytics && pnpm check-types && pnpm build && pnpm check-site-builds && pnpm test && pnpm check-cloudflare"
   },
   "devDependencies": {
     "@playwright/test": "1.64.1",

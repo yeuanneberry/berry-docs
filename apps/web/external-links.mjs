@@ -21,6 +21,7 @@ export default {
         ...node,
         properties: {
           ...node.properties,
+          ...(node.properties.href.startsWith("https://github.com/yeuanneberry/berry-desktop") ? { "data-stats-target": "desktop-source" } : {}),
           target: "_blank",
           rel: [...new Set([...tokens.filter(Boolean), "noopener", "noreferrer"])],
         },

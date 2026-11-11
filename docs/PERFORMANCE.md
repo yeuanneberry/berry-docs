@@ -1,32 +1,24 @@
 # Performance observations
 
-Measured 2026-10-27 with local Chromium, cold browser contexts, unthrottled
-localhost traffic and the project's 1440x900 / 375x812 viewports. These are lab
-observations, not production Core Web Vitals or guarantees about visitors.
+The reader is checked in local Chromium at 1440x900 and 375x812 with cold browser
+contexts and unthrottled loopback traffic. These are lab observations, not
+production Core Web Vitals or visitor guarantees.
 
-The baseline build was `2864392`. Before/after checks covered `/`, `/about/`,
-`/work/` and `/docs/customize/` at both sizes.
+`tests/performance.spec.ts` covers `/`, `/docs/` and `/docs/customize/`, writing
+LCP, FCP, CLS and resource sizes to ignored `test-results/.../performance.json`.
+Budgets are JavaScript below 25,000 decoded bytes, CSS below 30,000, font below
+100,000, CLS at most 0.1 and no off-origin requests. Timing has no fragile local
+millisecond threshold. One local WOFF2 is preloaded and used by CSS; original TTF
+remains for conversion and social artwork. There are no hydrated React islands.
 
-| Initial resource | Baseline | Updated | Check |
-| --- | ---: | ---: | --- |
-| Font, decoded bytes | 273,900 | 92,392 | Below 100,000 per page |
-| External JavaScript | None | None | No off-origin requests |
-| First-party JavaScript | 9,053 | 9,053 | Below 25,000 per page |
-| CSS | Below 24,000 | Below 24,000 | Below 30,000 per page |
+These resource-budget fixtures use collection-disabled builds. An enabled,
+eligible production load independently samples Web Vitals 10% of the time and
+loads the local web-vitals module only then. The collector retains rating buckets
+for LCP, INP and CLS rather than exact timings or visitor identifiers; sampled
+counts do not establish production percentiles. See [analytics](ANALYTICS.md).
 
-WOFF2 reduces font delivery by 181,508 bytes (about 66%). Fontconfig reported
-matching family, style and character coverage for the TTF and WOFF2. The exact
-WOFF2 URL is preloaded and used by CSS, so there is one browser font request.
-Original TTF bytes remain as the conversion source and for build-time artwork.
-
-`tests/performance.spec.ts` records initial LCP, FCP, CLS and resource sizes for
-each cold page into `test-results/.../performance.json`. It enforces the byte
-budgets above and CLS <=0.1. Timing values are reported without a fragile local
-millisecond threshold. Only visible introduction animations are awaited; closed
-native controls can contain pending transitions irrelevant to initial rendering.
-
-Image bytes below the fold, slow-device/network behavior, INP and real visitor
-percentiles are outside this check. Existing tests still verify image loading,
-responsive sources, high-density pixels, keyboard interaction and reduced motion.
-Real-user measurement can be enabled at launch after the analytics configuration
-is reviewed. No live visitor metrics exist for this unhosted site.
+Only visible intro animations are awaited; closed native controls can retain
+pending transitions. Browser tests also preserve keyboard navigation, heading
+links, no-JavaScript reading and reduced motion. Slow-device/network behavior,
+INP and real visitor percentiles are outside these checks. No visitor metrics
+were collected; live analytics requires separately authorized launch work.
